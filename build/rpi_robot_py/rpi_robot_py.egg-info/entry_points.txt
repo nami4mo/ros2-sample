@@ -1,0 +1,4 @@
+[console_scripts]
+human_sensor = rpi_robot_py.input_human_sensor:main
+servo = rpi_robot_py.output_servo:main
+
