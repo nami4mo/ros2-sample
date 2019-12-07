@@ -10,8 +10,9 @@ setup(
     version='0.0.1',
     packages='',
     py_modules=[
-        'python_programs.input_sensor',
-        'python_programs.output_servo'
+        'py_scripts.input_human_sensor',
+        'py_scripts.sample',
+        'py_scripts.output_servo'
     ],
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -32,19 +33,12 @@ setup(
     description='my first ros2 sample program',
     license='Apache License, Version 2.0',
     tests_require=['pytest'],
-
     entry_points={
         'console_scripts': [
-            'sensor = python_programs.input_sensor:main',
-            'servo = python_programs.output_servo:main',
-            # 'listener = demo_nodes_py.topics.listener:main',
-            # 'talker = demo_nodes_py.topics.talker:main',
-            # 'listener_qos = demo_nodes_py.topics.listener_qos:main',
-            # 'talker_qos = demo_nodes_py.topics.talker_qos:main',
-            # 'listener_serialized = demo_nodes_py.topics.listener_serialized:main',
-            # 'add_two_ints_client = demo_nodes_py.services.add_two_ints_client:main',
-            # 'add_two_ints_client_async = demo_nodes_py.services.add_two_ints_client_async:main',
-            # 'add_two_ints_server = demo_nodes_py.services.add_two_ints_server:main'
+            'human_sensor = py_scripts.input_human_sensor:main',
+            'sample = py_scripts.sample:main',
+            'sample2 = py_scripts.sample2:main',
+            'servo = py_scripts.output_servo:main',
         ],
     },
 )
