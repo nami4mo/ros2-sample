@@ -4,7 +4,7 @@
   <name>rpi_robot_py</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="naminori4mo@gmail.com">ubuntu</maintainer>
+  <maintainer email="ns@hoge.com">ubuntu</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_python</buildtool_depend>

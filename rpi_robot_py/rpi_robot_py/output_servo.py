@@ -9,7 +9,7 @@ import Adafruit_PCA9685
 ANGLE_MIN = -70
 ANGLE_MAX = 70
 
-# PCA9685 の 0 と 3 に、2つのサーボを接続
+# PCA9685 0 and 3
 SERVO_LEFT_ID = 0
 SERVO_RIGHT_ID = 3
 
