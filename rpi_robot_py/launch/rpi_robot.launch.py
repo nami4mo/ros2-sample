@@ -12,6 +12,7 @@ def generate_launch_description():
         Node(
             package='rpi_robot_py',
             node_executable='servo',
+            output='screen'
         ),
         Node(
             package='rpi_robot_py',

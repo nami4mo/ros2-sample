@@ -34,7 +34,6 @@ class Servo(Node):
 
 
     def set_angle(self, angle):
-        self.get_logger().info('set angle: {}'.format(angle))
         angle = max(ANGLE_MIN, angle)
         angle = min(ANGLE_MAX, angle)
         pulse = (600-150) / 180 * (angle + 90) + 150

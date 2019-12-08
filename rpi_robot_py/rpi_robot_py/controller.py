@@ -19,7 +19,6 @@ class MyController(Node):
 
     def sensor_callback(self, sensor_msg):
         if self.prev_sensor_data != sensor_msg.data:
-            self.get_logger().info('subscribr sensor data: {}'.format(sensor_msg.data))
             self.prev_sensor_data = sensor_msg.data
             if sensor_msg.data == True:
                 self.pub_servo_left.publish( Int8(data=random.randint(ANGLE_MIN, ANGLE_MAX)) )
