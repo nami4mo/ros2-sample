@@ -18,12 +18,8 @@ class HumanSensor(Node):
 
 
     def sensor_timer_callback(self):
-        sensor_data = self.get_sensor_data()
-        if self.prev_sensor_data != sensor_data:
-            sensor_msg = Bool(data=sensor_data)
-            self.prev_sensor_data = sensor_data
-            self.get_logger().info('publish sensor data: {}'.format(sensor_msg.data))
-            self.pub_sensor.publish(sensor_msg)
+        sensor_msg = Bool(data=self.get_sensor_data())
+        self.pub_sensor.publish(sensor_msg)
 
 
     def init_sensor(self):

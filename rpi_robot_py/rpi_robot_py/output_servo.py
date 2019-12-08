@@ -1,35 +1,40 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import SingleThreadedExecutor
-from rclpy.executors import MultiThreadedExecutor
-from std_msgs.msg import Bool
+# from rclpy.executors import MultiThreadedExecutor
+from std_msgs.msg import Int8
 
-import time
 import Adafruit_PCA9685
-import random
 
 ANGLE_MIN = -70
 ANGLE_MAX = 70
 
+# PCA9685 の 0 と 3 に、2つのサーボを接続
+SERVO_LEFT_ID = 0
+SERVO_RIGHT_ID = 3
 
 class Servo(Node):
-    def __init__(self, servo_id, move_timing):
-        super().__init__('servo_node_' + str(servo_id))
+    def __init__(self, servo_name, servo_id):
+        super().__init__('servo_node_' + servo_name)
+        self.init_pca9685()
+        self.servo_name = servo_name
         self.servo_id = servo_id
-        self.move_timing = move_timing
+        self.sub_topic_name = '/output/servo/' + servo_name
+        self.sub_servo = self.create_subscription(Int8, self.sub_topic_name, self.servo_callback, 10)
+
+
+    def init_pca9685(self):
         self.pwm = Adafruit_PCA9685.PCA9685(address=0x40)
         self.pwm.set_pwm_freq(60)
-        self.sub_sensor = self.create_subscription(Bool, '/input/human_sensor', self.sensor_callback, 10)
 
 
-    def sensor_callback(self, msg):
-        if self.move_timing == msg.data:
-            self.get_logger().info('subscribr sensor data: {}'.format(msg.data))
-            angle = random.randint(ANGLE_MIN, ANGLE_MAX)
-            self.set_angle(angle)
+    def servo_callback(self, servo_msg):
+        self.get_logger().info('subscribe servo angle: {}'.format(servo_msg.data))
+        self.set_angle(servo_msg.data)
 
 
     def set_angle(self, angle):
+        self.get_logger().info('set angle: {}'.format(angle))
         angle = max(ANGLE_MIN, angle)
         angle = min(ANGLE_MAX, angle)
         pulse = (600-150) / 180 * (angle + 90) + 150
@@ -38,18 +43,21 @@ class Servo(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    executor = MultiThreadedExecutor(num_threads=2)
-    node_0 = Servo(servo_id=0, move_timing=True)
-    node_3 = Servo(servo_id=3, move_timing=False)
-    executor.add_node(node_0)
-    executor.add_node(node_3)
+
+    executor = SingleThreadedExecutor()
+    # executor = MultiThreadedExecutor(num_threads=2)
+
+    node_left = Servo(servo_name='left', servo_id=SERVO_LEFT_ID)
+    node_right = Servo(servo_name='right', servo_id=SERVO_RIGHT_ID)
+    executor.add_node(node_left)
+    executor.add_node(node_right)
     try:
         executor.spin()
     except KeyboardInterrupt:
         pass
     executor.shutdown()
-    node_0.destroy_node()
-    node_3.destroy_node()
+    node_left.destroy_node()
+    node_right.destroy_node()
     rclpy.shutdown()
 
 
